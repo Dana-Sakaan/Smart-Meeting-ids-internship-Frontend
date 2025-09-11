@@ -9,11 +9,11 @@ import {
   FaSignOutAlt,
   FaCamera
 } from "react-icons/fa";
-import MeetingCard from "../Components/MeetingCard";
 import {useSelector,useDispatch} from "react-redux"
 import axios from "axios"
 import { useNavigate } from "react-router-dom";
 import { handleFileUpload } from "../firebase/UploadFunction";
+import Swal from "sweetalert2";
 
 const Profile = () => {
 
@@ -51,14 +51,47 @@ const Profile = () => {
   const handleEditInfo = async (e)=>{
     e.preventDefault()
     try {
-      const imageURL = await handleFileUpload(employee.avatar , "profiles")
-      const newEmployeeInfo = {...employee, avatar: imageURL}
-      const res = await axios.put(`/api/employee/${currentUser.id}`, newEmployeeInfo, {withCredentials:true})
-      setIsEditing(false)
-      navigate("/dashboard/profile")
+      const result = await Swal.fire({
+        title: "Do you want to edit your profile?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#4F46E5",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, edit it!",
+        cancelButtonText: "Cancel",
+        customClass: {
+          popup: "bg-gray-50 dark:bg-gray-900",
+          title: "text-gray-900 dark:text-white",
+        },
+      });
+
+      if (result.isConfirmed) {
+        const imageURL = await handleFileUpload(employee.avatar , "profiles")
+        const newEmployeeInfo = {...employee, avatar: imageURL}
+        const res = await axios.put(`/api/employee/${currentUser.id}`, newEmployeeInfo, {withCredentials:true})
+
+        await Swal.fire({
+          title: "Your profile has been updated successfully.",
+          icon: "success",
+          customClass: {
+            popup: "bg-gray-50 dark:bg-gray-900",
+            title: "text-gray-900 dark:text-white",
+          },
+        });
+        setIsEditing(false)
+        navigate("/dashboard/profile")
+      }
     } catch (error) {
-      setError(error)
-      console.log(error)
+      console.error(error);
+      let message = error.response.data;
+      Swal.fire({
+        title: message,
+        icon: "error",
+        customClass: {
+          popup: "bg-gray-50 dark:bg-gray-900",
+          title: "text-gray-900 dark:text-white",
+        },
+      });
     }
   }
 
@@ -66,10 +99,43 @@ const Profile = () => {
   const handleLogOut = async (e)=>{
     e.preventDefault()
     try {
-       const res = await axios.get(`/api/employee/logout`)
-      navigate("/")
+      const result = await Swal.fire({
+        title: "Do you want to Log out?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#4F46E5",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Log out",
+        cancelButtonText: "Cancel",
+        customClass: {
+          popup: "bg-gray-50 dark:bg-gray-900",
+          title: "text-gray-900 dark:text-white",
+        },
+      });
+
+      if (result.isConfirmed) {
+        const res = await axios.get(`/api/employee/logout`)
+        await Swal.fire({
+          title: "Loged out successfully.",
+          icon: "success",
+          customClass: {
+            popup: "bg-gray-50 dark:bg-gray-900",
+            title: "text-gray-900 dark:text-white",
+          },
+        });
+        navigate("/")
+      }
     } catch (error) {
-      console.log(error)
+      console.error(error);
+      let message = error.response.data;
+      Swal.fire({
+        title: message,
+        icon: "error",
+        customClass: {
+          popup: "bg-gray-50 dark:bg-gray-900",
+          title: "text-gray-900 dark:text-white",
+        },
+      });
     }
   }
 
@@ -86,15 +152,47 @@ const Profile = () => {
   }
   
   const SubmitChangedPassword = async ()=>{
-    try {
-      setLoading(true)
-      const res = await axios.post('/api/employee/changepassword', passwordData,{withCredentials:true})
-      setLoading(false)
-      navigate("/")
+       try {
+      const result = await Swal.fire({
+        title: "Do you want to change your password?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#4F46E5",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, edit it!",
+        cancelButtonText: "Cancel",
+        customClass: {
+          popup: "bg-gray-50 dark:bg-gray-900",
+          title: "text-gray-900 dark:text-white",
+        },
+      });
+
+      if (result.isConfirmed) {
+        setLoading(true)
+        const res = await axios.post('/api/employee/changepassword', passwordData,{withCredentials:true})
+
+        await Swal.fire({
+          title: "Password has been updated successfully.",
+          icon: "success",
+          customClass: {
+            popup: "bg-gray-50 dark:bg-gray-900",
+            title: "text-gray-900 dark:text-white",
+          },
+        });
+        setLoading(false)
+        navigate("/")
+      }
     } catch (error) {
-      setPassError(error)
-      setLoading(false)
-      console.log(error)
+      console.error(error);
+      let message = error.response.data;
+      Swal.fire({
+        title: message,
+        icon: "error",
+        customClass: {
+          popup: "bg-gray-50 dark:bg-gray-900",
+          title: "text-gray-900 dark:text-white",
+        },
+      });
     }
   }
 

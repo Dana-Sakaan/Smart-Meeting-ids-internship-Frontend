@@ -82,6 +82,7 @@ const Meetings = () => {
                 <option value="Upcoming">Upcoming</option>
                 <option value="InProgress">In Progress</option>
                 <option value="Completed">Completed</option>
+                <option value="Canceled">Canceled</option>
               </select>
             </div>
 

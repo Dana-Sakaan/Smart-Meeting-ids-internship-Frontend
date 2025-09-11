@@ -1,24 +1,56 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 function AddFeature() {
   const [featureName, setFeatureName] = useState({
    "feature" : ""
   });
-  const [error,setError] = useState(false)
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const res = await axios.post('/api/features' , featureName, {withCredentials:true})
-      navigate("/dashboard/rooms/addroom")
+     try {
+      const result = await Swal.fire({
+        title: "Do you want to add this feature?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#4F46E5",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, add it!",
+        cancelButtonText: "Cancel",
+        customClass: {
+          popup: "bg-gray-50 dark:bg-gray-900",
+          title: "text-gray-900 dark:text-white",
+        },
+      });
+
+      if (result.isConfirmed) {
+        const res = await axios.post('/api/features' , featureName, {withCredentials:true});
+
+        await Swal.fire({
+          title: "Room has been deleted successfully.",
+          icon: "success",
+          customClass: {
+            popup: "bg-gray-50 dark:bg-gray-900",
+            title: "text-gray-900 dark:text-white",
+          },
+        });
+        navigate("/dashboard/rooms/addroom")
+      }
     } catch (error) {
-      setError(error.response.data)
-      console.log(error)
+      console.error(error);
+      let message = error.response.data;
+      Swal.fire({
+        title: message,
+        icon: "error",
+        customClass: {
+          popup: "bg-gray-50 dark:bg-gray-900",
+          title: "text-gray-900 dark:text-white",
+        },
+      });
     }
-   
   };
 
   return (
@@ -57,7 +89,6 @@ function AddFeature() {
                 Submit Feature
               </button>
             </div>
-             {error && <p className="text-red-700 place-self-center text-lg">{error}</p> }
           </form>
         </div>
       </div>

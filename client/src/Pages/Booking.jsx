@@ -14,6 +14,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import Swal from "sweetalert2";
 
 const Booking = () => {
   const navigate = useNavigate();
@@ -101,16 +102,50 @@ const Booking = () => {
 
   const handleSubmit = async (e)=>{
     e.preventDefault()
-    try {
-      setLoading(true)
+      try {
+      const result = await Swal.fire({
+        title: "Book a meeting?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#4F46E5",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
+        cancelButtonText: "Cancel",
+        customClass: {
+          popup: "bg-gray-50 dark:bg-gray-900",
+          title: "text-gray-900 dark:text-white",
+        },
+      });
+
+      if (result.isConfirmed) {
+       setLoading(true)
       const res = await axios.post('/api/meeting' , meetingDetails, {withCredentials:true})
       for(let i=0; i<chosenEmployees.length; i++){
         const res2 = await axios.post(`/api/${res.data.id}/attendee` , {employeeID: chosenEmployees[i]}, {withCredentials:true})
       }
-      setLoading(false)
+
+        await Swal.fire({
+          title: "Meeting has been booked successfully.",
+          icon: "success",
+          customClass: {
+            popup: "bg-gray-50 dark:bg-gray-900",
+            title: "text-gray-900 dark:text-white",
+          },
+        });
+       setLoading(false)
       navigate(`/dashboard/meetings/${res.data.id}`)
+      }
     } catch (error) {
-      console.log(error)
+      console.error(error);
+      let message = error.response.data;
+      Swal.fire({
+        title: message,
+        icon: "error",
+        customClass: {
+          popup: "bg-gray-50 dark:bg-gray-900",
+          title: "text-gray-900 dark:text-white",
+        },
+      });
     }
   }
 

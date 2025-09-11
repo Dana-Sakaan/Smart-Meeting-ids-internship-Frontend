@@ -9,11 +9,11 @@ import {
 } from "react-icons/fa";
 import axios from 'axios'
 import { Link, useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2'
 
 const AddEmployee = () => {
 
   const navigate = useNavigate();
-  const [error, setError] = useState(false)
   const [loading, setLoading] = useState(false)
   const [userData,setUserData] = useState({
     "firstName": "",
@@ -29,20 +29,54 @@ const AddEmployee = () => {
     setUserData({...userData, [e.target.name]: e.target.value})
   }
   
-  const handleSubmit = async (e)=>{
-    console.log(userData)
-    e.preventDefault();
-    try {
-      setLoading(true)
-      const res = await axios.post("/api/employee", userData, {withCredentials:true})
-      console.log(res)
-      navigate("/dashboard/employees")
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const result = await Swal.fire({
+      title: "Do you want to add this employee?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#4F46E5",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, add it!",
+      cancelButtonText: "Cancel",
+      customClass: {
+        popup: "bg-gray-50 dark:bg-gray-900",
+        title: "text-gray-900 dark:text-white"
+      }
+    });
+
+    if (result.isConfirmed) {
+      setLoading(true);
+      const res = await axios.post("/api/employee", userData, {
+        withCredentials: true,
+      });
+
+      await Swal.fire({
+        title: "Employee has been added successfully.",
+        icon: "success",
+        customClass: {
+          popup: "bg-gray-50 dark:bg-gray-900",
+          title: "text-gray-900 dark:text-white"
+        }
+      });
       setLoading(false)
-    } catch (error) {
-      setError(error.response.data)
-      console.log(error)
+      navigate("/dashboard/employees");
     }
+  } catch (error) {
+    console.error(error);
+    let message = error.response.data;
+    Swal.fire({
+      title: message,
+      icon: "error",
+      customClass: {
+        popup: "bg-gray-50 dark:bg-gray-900",
+         title: "text-gray-900 dark:text-white",
+      }
+    });
   }
+};
+
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6">
@@ -190,7 +224,6 @@ const AddEmployee = () => {
                 Create User
               </button> <br/>
             </div>
-            {error && <p className="text-red-700 place-self-center text-lg">{error}</p> }
           </form>
         </div>
       </div>

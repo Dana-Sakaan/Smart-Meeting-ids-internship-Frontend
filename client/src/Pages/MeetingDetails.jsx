@@ -12,10 +12,16 @@ import {
   FaArrowLeft,
   FaDownload,
 } from "react-icons/fa";
-import { MdMeetingRoom, MdDescription, MdCancelScheduleSend, MdCancel } from "react-icons/md";
+import {
+  MdMeetingRoom,
+  MdDescription,
+  MdCancelScheduleSend,
+  MdCancel,
+} from "react-icons/md";
 import EmployeeCard from "../Components/EmployeeCard";
 import axios from "axios";
 import { handleFileUpload } from "../firebase/UploadFunction";
+import Swal from "sweetalert2";
 
 const MeetingDetails = () => {
   const { meetingId } = useParams();
@@ -26,8 +32,6 @@ const MeetingDetails = () => {
   const [meeting, setMeeting] = useState();
   const [minutesMeeting, setMinutesMeeting] = useState();
   const [attendees, setAttendees] = useState([]);
-  const [authorResult, setAuthorResult] = useState(false);
-  const [summaryResult, setSummaryResult] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
   console.log(currentUser);
   console.log(meeting);
@@ -53,16 +57,47 @@ const MeetingDetails = () => {
   const handleAddAuthor = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(
-        `/api/${meeting.id}/MOM/addauthor`,
-        { authorId: selectedAttendee },
-        { withCredentials: true }
-      );
-      console.log(res);
-      setAuthorResult(res.data);
+      const result = await Swal.fire({
+        title: "Add Author?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#4F46E5",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
+        cancelButtonText: "Cancel",
+        customClass: {
+          popup: "bg-gray-50 dark:bg-gray-900",
+          title: "text-gray-900 dark:text-white",
+        },
+      });
+
+      if (result.isConfirmed) {
+        const res = await axios.post(
+          `/api/${meeting.id}/MOM/addauthor`,
+          { authorId: selectedAttendee },
+          { withCredentials: true }
+        );
+
+        await Swal.fire({
+          title: "Meeting Author has been booked successfully.",
+          icon: "success",
+          customClass: {
+            popup: "bg-gray-50 dark:bg-gray-900",
+            title: "text-gray-900 dark:text-white",
+          },
+        });
+      }
     } catch (error) {
-      setAuthorResult(error.response.data);
-      console.log(error);
+      console.error(error);
+      let message = error.response.data;
+      Swal.fire({
+        title: message,
+        icon: "error",
+        customClass: {
+          popup: "bg-gray-50 dark:bg-gray-900",
+          title: "text-gray-900 dark:text-white",
+        },
+      });
     }
   };
 
@@ -73,29 +108,98 @@ const MeetingDetails = () => {
   const handleAddSummary = async (e) => {
     e.preventDefault();
     try {
-      const fileUrl = await handleFileUpload(file, "summaries");
-      const res = await axios.post(
-        `/api/${meeting.id}/MOM/addsummary`,
-        { summary: summary, summaryPdf: fileUrl },
-        { withCredentials: true }
-      );
-      console.log(res);
-      setSummaryResult(res.data);
+      const result = await Swal.fire({
+        title: "Add meeting summary?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#4F46E5",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
+        cancelButtonText: "Cancel",
+        customClass: {
+          popup: "bg-gray-50 dark:bg-gray-900",
+          title: "text-gray-900 dark:text-white",
+        },
+      });
+
+      if (result.isConfirmed) {
+        const fileUrl = await handleFileUpload(file, "summaries");
+        const res = await axios.post(
+          `/api/${meeting.id}/MOM/addsummary`,
+          { summary: summary, summaryPdf: fileUrl },
+          { withCredentials: true }
+        );
+
+        await Swal.fire({
+          title: "Meeting summary has been booked successfully.",
+          icon: "success",
+          customClass: {
+            popup: "bg-gray-50 dark:bg-gray-900",
+            title: "text-gray-900 dark:text-white",
+          },
+        });
+        setLoading(false);
+        navigate(`/dashboard/meetings/${res.data.id}`);
+      }
     } catch (error) {
-      setSummaryResult(error.response.data.message);
-      console.log(error);
+      console.error(error);
+      let message = error.response.data;
+      Swal.fire({
+        title: message,
+        icon: "error",
+        customClass: {
+          popup: "bg-gray-50 dark:bg-gray-900",
+          title: "text-gray-900 dark:text-white",
+        },
+      });
     }
   };
 
-  const handleCancelMeeting = async (e)=>{
-    e.preventDefault()
+  const handleCancelMeeting = async (e) => {
+    e.preventDefault();
     try {
-      const res = await axios.put(`/api/meeting/cancelmeeting/${meetingId}`, {withCredentials:true})
-      navigate(-1)
+      const result = await Swal.fire({
+        title: "Cancel this meeting?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#4F46E5",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
+        cancelButtonText: "Cancel",
+        customClass: {
+          popup: "bg-gray-50 dark:bg-gray-900",
+          title: "text-gray-900 dark:text-white",
+        },
+      });
+
+      if (result.isConfirmed) {
+        const res = await axios.put(`/api/meeting/cancelmeeting/${meetingId}`, {
+          withCredentials: true,
+        });
+
+        await Swal.fire({
+          title: "Meeting has been canceled successfully.",
+          icon: "success",
+          customClass: {
+            popup: "bg-gray-50 dark:bg-gray-900",
+            title: "text-gray-900 dark:text-white",
+          },
+        });
+        navigate(-1);
+      }
     } catch (error) {
-      console.log(error)
+      console.error(error);
+      let message = error.response.data;
+      Swal.fire({
+        title: message,
+        icon: "error",
+        customClass: {
+          popup: "bg-gray-50 dark:bg-gray-900",
+          title: "text-gray-900 dark:text-white",
+        },
+      });
     }
-  }
+  };
 
   useEffect(() => {
     getMeeting();
@@ -121,38 +225,39 @@ const MeetingDetails = () => {
       bg: "bg-green-100 dark:bg-green-900/30",
       textColor: "text-green-800 dark:text-green-200",
     },
-   'Canceled': {
+    Canceled: {
       icon: <MdCancel className="text-red-500" />,
-      text: 'Canceled',
-      bg: 'bg-red-100 dark:bg-red-900/30',
-      textColor: 'text-white dark:text-white'
-    }
+      text: "Canceled",
+      bg: "bg-red-100 dark:bg-red-900/30",
+      textColor: "text-white dark:text-white",
+    },
   };
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6">
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between">
-        {/* Back Button */}
-        <button 
-          onClick={() => navigate(-1)}
-          className="flex items-center text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 mb-6 transition-colors"
-        >
-          <FaArrowLeft className="mr-2" />
-          Back to Meetings
-        </button>
-
-        
-        {meeting && (currentUser.id == meeting.employeeID || currentUser.role == "Admin") && meeting.status == "Upcoming" &&
+          {/* Back Button */}
           <button
-            onClick={handleCancelMeeting}
-            className="flex p-2 rounded-md items-center bg-indigo-600 text-white hover:text-indigo-500 dark:hover:text-indigo-300 mb-6 transition-colors"
+            onClick={() => navigate(-1)}
+            className="flex items-center text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 mb-6 transition-colors"
           >
-            <MdCancel className="mr-2" />
-            Cancel Meeting
+            <FaArrowLeft className="mr-2" />
+            Back to Meetings
           </button>
-        }
-        
+
+          {meeting &&
+            (currentUser.id == meeting.employeeID ||
+              currentUser.role == "Admin") &&
+            meeting.status == "Upcoming" && (
+              <button
+                onClick={handleCancelMeeting}
+                className="flex p-2 rounded-md items-center bg-indigo-600 text-white hover:text-indigo-500 dark:hover:text-indigo-300 mb-6 transition-colors"
+              >
+                <MdCancel className="mr-2" />
+                Cancel Meeting
+              </button>
+            )}
         </div>
         {/* Meeting Header */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 mb-6">
@@ -262,7 +367,7 @@ const MeetingDetails = () => {
                   {minutesMeeting.summary}
                 </p>
               </div>
-              
+
               <div>
                 <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
                   Supporting Documents
@@ -277,9 +382,10 @@ const MeetingDetails = () => {
                   Download Summary PDF
                 </a>
               </div>
-              
+
               <div className="text-sm text-gray-500 dark:text-gray-400">
-                Summary prepared by: {minutesMeeting.authorEmail || "Meeting participant"}
+                Summary prepared by:{" "}
+                {minutesMeeting.authorEmail || "Meeting participant"}
               </div>
             </div>
           ) : (
@@ -317,11 +423,6 @@ const MeetingDetails = () => {
                   >
                     Add Author
                   </button>
-                  {authorResult && (
-                    <p className="text-red-700 place-self-center text-lg">
-                      {authorResult}
-                    </p>
-                  )}
                 </form>
               )}
 
@@ -371,11 +472,6 @@ const MeetingDetails = () => {
                   >
                     Submit Summary
                   </button>
-                  {summaryResult && (
-                    <p className="text-red-700 place-self-center text-lg">
-                      {summaryResult}
-                    </p>
-                  )}
                 </form>
               )}
             </>
