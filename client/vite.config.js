@@ -9,7 +9,7 @@ export default defineConfig({
       '/api': {
         target: ' http://smartmeetingbe.runasp.net',
         changeOrigin: true,
-        // rewrite: (path) => path.replace(/^\/api/, '')
+        secure: false,
       }
     }
   }
