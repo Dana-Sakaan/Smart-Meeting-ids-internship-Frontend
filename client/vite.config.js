@@ -7,7 +7,7 @@ export default defineConfig({
    server: {
     proxy: {
       '/api': {
-        target: 'smartmeeting20250913230032.azurewebsites.net',
+        target: 'https://smartmeeting20250913230032.azurewebsites.net',
         changeOrigin: true,
         secure: false,
       }
