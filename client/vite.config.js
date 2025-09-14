@@ -7,11 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-<<<<<<< HEAD
-        target: 'http://localhost:5257',
-=======
-        target: 'https://smartmeeting20250913230032.azurewebsites.net',
->>>>>>> 5973c6c5332ffdab1997f188a950486b8b328641
+        target: 'https://smartmeeting20250913230032.azurewebsites.net', 
         changeOrigin: true,
       }
     }
