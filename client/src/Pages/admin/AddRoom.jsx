@@ -29,7 +29,9 @@ const AddRoom = () => {
 
   const getAvailableFeatures = async () => {
     try {
-      const res = await axios.get("https://smartmeeting20250913230032.azurewebsites.net/api/features");
+      const res = await axios.get("https://smartmeeting20250913230032.azurewebsites.net/api/features",{
+        withCredentials: true,
+      });
       setRoomFeatures(res.data);
     } catch (error) {
       console.log(error);

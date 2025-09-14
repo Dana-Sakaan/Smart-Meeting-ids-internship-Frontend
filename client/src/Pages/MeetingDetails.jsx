@@ -36,8 +36,12 @@ const MeetingDetails = () => {
 
   const getMeeting = async () => {
     try {
-      const res = await axios.get(`https://smartmeeting20250913230032.azurewebsites.net/api/meeting/${meetingId}`);
-      const res2 = await axios.get(`https://smartmeeting20250913230032.azurewebsites.net/api/${meetingId}/attendee`);
+      const res = await axios.get(`https://smartmeeting20250913230032.azurewebsites.net/api/meeting/${meetingId}`,{
+        withCredentials: true,
+      });
+      const res2 = await axios.get(`https://smartmeeting20250913230032.azurewebsites.net/api/${meetingId}/attendee`,{
+        withCredentials: true,
+      });
       const res3 = await axios.get(`https://smartmeeting20250913230032.azurewebsites.net/api/${meetingId}/MOM`, {
         withCredentials: true,
       });

@@ -15,8 +15,12 @@ const Employees = () => {
 
   const getEmployees = async () =>{
     try {
-      const res = await axios.get('https://smartmeeting20250913230032.azurewebsites.net/api/employee');
-      const res2 = await axios.get('https://smartmeeting20250913230032.azurewebsites.net/api/employee/jobs')
+      const res = await axios.get('https://smartmeeting20250913230032.azurewebsites.net/api/employee',{
+        withCredentials: true,
+      });
+      const res2 = await axios.get('https://smartmeeting20250913230032.azurewebsites.net/api/employee/jobs',{
+        withCredentials: true,
+      })
       setEmployees(res.data)
       setJobs(res2.data)
     } catch (error) {

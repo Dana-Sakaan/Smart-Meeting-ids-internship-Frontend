@@ -15,7 +15,9 @@ const Rooms = () => {
 
   const getRooms = async () =>{
     try {
-      const res = await axios.get('https://smartmeeting20250913230032.azurewebsites.net/api/room');
+      const res = await axios.get('https://smartmeeting20250913230032.azurewebsites.net/api/room',{
+        withCredentials: true,
+      });
       setRooms(res.data)
     } catch (error) {
       console.log(error)

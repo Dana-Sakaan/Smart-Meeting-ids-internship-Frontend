@@ -13,7 +13,9 @@ const EditRoomPage = () => {
 
   const getRoom = async () => {
     try {
-      const res = await axios.get(`https://smartmeeting20250913230032.azurewebsites.net/api/room/${roomId}`);
+      const res = await axios.get(`https://smartmeeting20250913230032.azurewebsites.net/api/room/${roomId}`,{
+        withCredentials: true,
+      });
       setRoomData(res.data);
     } catch (error) {
       console.log(error);

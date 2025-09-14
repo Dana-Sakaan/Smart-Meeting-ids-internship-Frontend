@@ -33,7 +33,9 @@ const Profile = () => {
   
   const getEmployee = async () =>{
     try {
-      const res = await axios.get(`https://smartmeeting20250913230032.azurewebsites.net/api/employee/${currentUser.id}`);
+      const res = await axios.get(`https://smartmeeting20250913230032.azurewebsites.net/api/employee/${currentUser.id}`,{
+        withCredentials: true,
+      });
       setEmployee(res.data)
     } catch (error) {
       console.log(error)
@@ -114,7 +116,9 @@ const Profile = () => {
       });
 
       if (result.isConfirmed) {
-        const res = await axios.get(`https://smartmeeting20250913230032.azurewebsites.net/api/employee/logout`)
+        const res = await axios.get(`https://smartmeeting20250913230032.azurewebsites.net/api/employee/logout`,{
+        withCredentials: true,
+      })
         await Swal.fire({
           title: "Loged out successfully.",
           icon: "success",
