@@ -48,7 +48,7 @@ const handleSubmit = async (e) => {
 
     if (result.isConfirmed) {
       setLoading(true);
-      const res = await axios.post("/api/employee", userData, {
+      const res = await axios.post("https://smartmeeting20250913230032.azurewebsites.net/api/employee", userData, {
         withCredentials: true,
       });
 

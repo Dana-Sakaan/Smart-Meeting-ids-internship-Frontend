@@ -13,7 +13,7 @@ const EditRoomPage = () => {
 
   const getRoom = async () => {
     try {
-      const res = await axios.get(`/api/room/${roomId}`);
+      const res = await axios.get(`https://smartmeeting20250913230032.azurewebsites.net/api/room/${roomId}`);
       setRoomData(res.data);
     } catch (error) {
       console.log(error);
@@ -43,7 +43,7 @@ const EditRoomPage = () => {
 
       if (result.isConfirmed) {
         setLoading(true);
-        const res = await axios.put(`/api/room/${roomId}`, roomData, {
+        const res = await axios.put(`https://smartmeeting20250913230032.azurewebsites.net/api/room/${roomId}`, roomData, {
           withCredentials: true,
         });
 
@@ -91,7 +91,7 @@ const EditRoomPage = () => {
 
       if (result.isConfirmed) {
         setLoading(true);
-        const res = await axios.delete(`/api/room/${roomId}`, {
+        const res = await axios.delete(`https://smartmeeting20250913230032.azurewebsites.net/api/room/${roomId}`, {
           withCredentials: true,
         });
 

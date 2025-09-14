@@ -53,7 +53,7 @@ const Booking = () => {
   const getAvailableRooms = async(e)=>{
      e.preventDefault()
      try {
-      const res = await axios.get('/api/meeting/availablerooms', {
+      const res = await axios.get('https://smartmeeting20250913230032.azurewebsites.net/api/meeting/availablerooms', {
       params: {
         date: meetingDetails.date,
         time: meetingDetails.time, 
@@ -76,7 +76,7 @@ const Booking = () => {
   const getAvailableEmployees = async (e)=>{
     e.preventDefault()
     try {
-      const res = await axios.get('/api/meeting/availableemployees' ,{
+      const res = await axios.get('https://smartmeeting20250913230032.azurewebsites.net/api/meeting/availableemployees' ,{
       params: {
         date: meetingDetails.date,
         time: meetingDetails.time, 
@@ -119,9 +119,9 @@ const Booking = () => {
 
       if (result.isConfirmed) {
        setLoading(true)
-      const res = await axios.post('/api/meeting' , meetingDetails, {withCredentials:true})
+      const res = await axios.post('https://smartmeeting20250913230032.azurewebsites.net/api/meeting' , meetingDetails, {withCredentials:true})
       for(let i=0; i<chosenEmployees.length; i++){
-        const res2 = await axios.post(`/api/${res.data.id}/attendee` , {employeeID: chosenEmployees[i]}, {withCredentials:true})
+        const res2 = await axios.post(`https://smartmeeting20250913230032.azurewebsites.net/api/${res.data.id}/attendee` , {employeeID: chosenEmployees[i]}, {withCredentials:true})
       }
 
         await Swal.fire({

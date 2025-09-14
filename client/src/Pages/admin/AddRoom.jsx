@@ -29,7 +29,7 @@ const AddRoom = () => {
 
   const getAvailableFeatures = async () => {
     try {
-      const res = await axios.get("/api/features");
+      const res = await axios.get("https://smartmeeting20250913230032.azurewebsites.net/api/features");
       setRoomFeatures(res.data);
     } catch (error) {
       console.log(error);
@@ -80,11 +80,11 @@ const AddRoom = () => {
         const imageURL = await handleFileUpload(roomData.image, "Rooms");
         const updatedRoomData = { ...roomData, image: imageURL };
         console.log(updatedRoomData);
-        const res = await axios.post("/api/room", updatedRoomData, {
+        const res = await axios.post("https://smartmeeting20250913230032.azurewebsites.net/api/room", updatedRoomData, {
           withCredentials: true,
         }); //add room
         const res2 = await axios.post(
-          `/api/room/${res.data.id}/features`,
+          `https://smartmeeting20250913230032.azurewebsites.net/api/room/${res.data.id}/features`,
           { featureIDs: choosenFeatures },
           { withCredentials: true }
         ); // add features for this room

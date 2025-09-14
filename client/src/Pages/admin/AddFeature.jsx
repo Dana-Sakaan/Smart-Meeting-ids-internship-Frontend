@@ -27,7 +27,7 @@ function AddFeature() {
       });
 
       if (result.isConfirmed) {
-        const res = await axios.post('/api/features' , featureName, {withCredentials:true});
+        const res = await axios.post('https://smartmeeting20250913230032.azurewebsites.net/api/features' , featureName, {withCredentials:true});
 
         await Swal.fire({
           title: "Room has been deleted successfully.",

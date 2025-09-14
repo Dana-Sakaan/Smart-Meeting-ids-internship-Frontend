@@ -33,7 +33,7 @@ const Profile = () => {
   
   const getEmployee = async () =>{
     try {
-      const res = await axios.get(`/api/employee/${currentUser.id}`);
+      const res = await axios.get(`https://smartmeeting20250913230032.azurewebsites.net/api/employee/${currentUser.id}`);
       setEmployee(res.data)
     } catch (error) {
       console.log(error)
@@ -68,7 +68,7 @@ const Profile = () => {
       if (result.isConfirmed) {
         const imageURL = await handleFileUpload(employee.avatar , "profiles")
         const newEmployeeInfo = {...employee, avatar: imageURL}
-        const res = await axios.put(`/api/employee/${currentUser.id}`, newEmployeeInfo, {withCredentials:true})
+        const res = await axios.put(`https://smartmeeting20250913230032.azurewebsites.net/api/employee/${currentUser.id}`, newEmployeeInfo, {withCredentials:true})
 
         await Swal.fire({
           title: "Your profile has been updated successfully.",
@@ -114,7 +114,7 @@ const Profile = () => {
       });
 
       if (result.isConfirmed) {
-        const res = await axios.get(`/api/employee/logout`)
+        const res = await axios.get(`https://smartmeeting20250913230032.azurewebsites.net/api/employee/logout`)
         await Swal.fire({
           title: "Loged out successfully.",
           icon: "success",
@@ -169,7 +169,7 @@ const Profile = () => {
 
       if (result.isConfirmed) {
         setLoading(true)
-        const res = await axios.post('/api/employee/changepassword', passwordData,{withCredentials:true})
+        const res = await axios.post('https://smartmeeting20250913230032.azurewebsites.net/api/employee/changepassword', passwordData,{withCredentials:true})
 
         await Swal.fire({
           title: "Password has been updated successfully.",
@@ -200,29 +200,6 @@ const Profile = () => {
   useEffect(()=>{
     getEmployee()
   }, [])
-
-const employeeMeetings = [
-    {
-      id: "1",
-      title: "Quarterly Planning",
-      date: "2023-11-15",
-      time: "14:00",
-      duration: 90,
-      createdBy: "Sam Wilson",
-      roomName: "Boardroom",
-      status: "upcoming"
-    },
-    {
-      id: "2",
-      title: "Team Sync",
-      date: "2023-11-10",
-      time: "09:30",
-      duration: 30,
-      createdBy: "Taylor Smith",
-      roomName: "Conference Room A",
-      status: "ended"
-    }
-  ];
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6">

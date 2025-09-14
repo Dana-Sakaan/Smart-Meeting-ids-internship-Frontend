@@ -7,9 +7,8 @@ export default defineConfig({
    server: {
     proxy: {
       '/api': {
-        target: ' http://smartmeetingbe.runasp.net',
+        target: 'http://localhost:5257',
         changeOrigin: true,
-        secure: false,
       }
     }
   }

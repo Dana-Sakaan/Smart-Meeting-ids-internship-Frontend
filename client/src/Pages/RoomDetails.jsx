@@ -13,8 +13,8 @@ const RoomDetails = () => {
 
   const getRoom = async () =>{
     try {
-      const res = await axios.get(`/api/room/${roomId}`);
-      const res2 = await axios.get(`/api/room/${roomId}/features`)
+      const res = await axios.get(`https://smartmeeting20250913230032.azurewebsites.net/api/room/${roomId}`);
+      const res2 = await axios.get(`https://smartmeeting20250913230032.azurewebsites.net/api/room/${roomId}/features`)
       setRoom(res.data)
       setFeatures(res2.data)
     } catch (error) {

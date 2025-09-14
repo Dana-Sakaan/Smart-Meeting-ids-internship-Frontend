@@ -33,14 +33,12 @@ const MeetingDetails = () => {
   const [minutesMeeting, setMinutesMeeting] = useState();
   const [attendees, setAttendees] = useState([]);
   const { currentUser } = useSelector((state) => state.user);
-  console.log(currentUser);
-  console.log(meeting);
-  console.log(selectedAttendee);
+
   const getMeeting = async () => {
     try {
-      const res = await axios.get(`/api/meeting/${meetingId}`);
-      const res2 = await axios.get(`/api/${meetingId}/attendee`);
-      const res3 = await axios.get(`/api/${meetingId}/MOM`, {
+      const res = await axios.get(`https://smartmeeting20250913230032.azurewebsites.net/api/meeting/${meetingId}`);
+      const res2 = await axios.get(`https://smartmeeting20250913230032.azurewebsites.net/api/${meetingId}/attendee`);
+      const res3 = await axios.get(`https://smartmeeting20250913230032.azurewebsites.net/api/${meetingId}/MOM`, {
         withCredentials: true,
       });
       console.log(res3);
@@ -73,7 +71,7 @@ const MeetingDetails = () => {
 
       if (result.isConfirmed) {
         const res = await axios.post(
-          `/api/${meeting.id}/MOM/addauthor`,
+          `https://smartmeeting20250913230032.azurewebsites.net/api/${meeting.id}/MOM/addauthor`,
           { authorId: selectedAttendee },
           { withCredentials: true }
         );
@@ -125,7 +123,7 @@ const MeetingDetails = () => {
       if (result.isConfirmed) {
         const fileUrl = await handleFileUpload(file, "summaries");
         const res = await axios.post(
-          `/api/${meeting.id}/MOM/addsummary`,
+          `https://smartmeeting20250913230032.azurewebsites.net/api/${meeting.id}/MOM/addsummary`,
           { summary: summary, summaryPdf: fileUrl },
           { withCredentials: true }
         );
@@ -173,7 +171,7 @@ const MeetingDetails = () => {
       });
 
       if (result.isConfirmed) {
-        const res = await axios.put(`/api/meeting/cancelmeeting/${meetingId}`, {
+        const res = await axios.put(`https://smartmeeting20250913230032.azurewebsites.net/api/meeting/cancelmeeting/${meetingId}`, {
           withCredentials: true,
         });
 

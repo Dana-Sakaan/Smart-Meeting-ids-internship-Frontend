@@ -11,7 +11,7 @@ const Meetings = () => {
 
   const getMeetings = async ()=>{
     try {
-      const res = await axios.get('/api/meeting?status=upcoming');
+      const res = await axios.get('https://smartmeeting20250913230032.azurewebsites.net/api/meeting?status=upcoming');
       setMeetings(res.data)
     } catch (error) {
       console.log(error)
@@ -20,7 +20,7 @@ const Meetings = () => {
 
   const handleFiltering = async ()=>{
     try {
-      let url = `/api/meeting/filter?searchTerm=${searchTerm}&status=${statusFilter}&dateFilter=${dateFilter}`
+      let url = `https://smartmeeting20250913230032.azurewebsites.net/api/meeting/filter?searchTerm=${searchTerm}&status=${statusFilter}&dateFilter=${dateFilter}`
     const res = await axios.get(url, {withCredentials:true})
     setMeetings(res.data)
     } catch (error) {

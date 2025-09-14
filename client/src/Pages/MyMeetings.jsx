@@ -13,7 +13,7 @@ const MyMeetings = () => {
 
   const getMyMeetings = async ()=>{
     try {
-      const res = await axios.get(`/api/meeting/employeeallmeetings/${currentUser.id}` , {withCredentials:true});
+      const res = await axios.get(`https://smartmeeting20250913230032.azurewebsites.net/api/meeting/employeeallmeetings/${currentUser.id}` , {withCredentials:true});
       setMeetings(res.data)
     } catch (error) {
       console.log(error)
@@ -22,7 +22,7 @@ const MyMeetings = () => {
 
   const handleFiltering = async ()=>{
     try {
-      let url = `/api/meeting/filterempmeetings?searchTerm=${searchTerm}&status=${statusFilter}&dateFilter=${dateFilter}`
+      let url = `https://smartmeeting20250913230032.azurewebsites.net/api/meeting/filterempmeetings?searchTerm=${searchTerm}&status=${statusFilter}&dateFilter=${dateFilter}`
     const res = await axios.get(url, {withCredentials:true})
     setMeetings(res.data)
     } catch (error) {

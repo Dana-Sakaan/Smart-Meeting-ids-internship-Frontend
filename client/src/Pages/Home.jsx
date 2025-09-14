@@ -22,7 +22,7 @@ const Home = () => {
 
   const getUpcomingMeetings = async ()=>{
     try {
-      const res = await axios.get(`/api/meeting/employeemeetings/${currentUser.id}`, {params:{
+      const res = await axios.get(`https://smartmeeting20250913230032.azurewebsites.net/api/meeting/employeemeetings/${currentUser.id}`, {params:{
          date: dateValue.format('YYYY-MM-DD')
       }})
       setUpcomingMeetings(res.data)

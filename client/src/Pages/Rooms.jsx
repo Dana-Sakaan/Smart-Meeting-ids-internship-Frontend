@@ -15,7 +15,7 @@ const Rooms = () => {
 
   const getRooms = async () =>{
     try {
-      const res = await axios.get('/api/room');
+      const res = await axios.get('https://smartmeeting20250913230032.azurewebsites.net/api/room');
       setRooms(res.data)
     } catch (error) {
       console.log(error)
@@ -24,7 +24,7 @@ const Rooms = () => {
 
   const handleFiltering = async ()=>{
      try {
-      let url = `/api/room/filter?searchTerm=${searchTerm}&status=${statusFilter}&capacity=${capacityFilter}`
+      let url = `https://smartmeeting20250913230032.azurewebsites.net/api/room/filter?searchTerm=${searchTerm}&status=${statusFilter}&capacity=${capacityFilter}`
       const res = await axios.get(url, {withCredentials:true})
       setRooms(res.data)
     } catch (error) {
