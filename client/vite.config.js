@@ -9,7 +9,8 @@ export default defineConfig({
       '/api': {
         target: 'https://smartmeeting20250913230032.azurewebsites.net', 
         changeOrigin: true,
-        secure: false
+        secure: true,
+        rewrite: (path) => path.replace(/^\/api/, '')
       }
     }
   }
