@@ -19,7 +19,7 @@ function SignIn() {
     e.preventDefault();
     try {
       dispatch(loginPending())
-      const result = await axios.post("https://smartmeeting20250913230032.azurewebsites.net/api/employee/login" , userData)
+      const result = await axios.post("https://smartmeeting20250913230032.azurewebsites.net/api/employee/login" , userData,  { withCredentials: true })
       dispatch(loginSuccessfull(result.data.employee))
       navigate('/dashboard')
     } catch (error) {
