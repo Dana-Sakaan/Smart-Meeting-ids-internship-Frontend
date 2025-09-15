@@ -141,7 +141,7 @@ const MeetingDetails = () => {
           },
         });
         setLoading(false);
-        navigate(`/dashboard/meetings/${res.data.id}`);
+        navigate(`/dashboard/meetings/${meetingId}`);
       }
     } catch (error) {
       console.error(error);
@@ -311,6 +311,10 @@ const MeetingDetails = () => {
                 <div className="flex">
                   <span className="font-medium w-24">Room:</span>
                   <span>{meeting && meeting.roomName}</span>
+                </div>
+                <div className="flex">
+                  <span className="font-medium w-24">Author:</span>
+                  <span>{minutesMeeting && minutesMeeting.authorEmail} || Not chosen yet</span>
                 </div>
               </div>
             </div>
