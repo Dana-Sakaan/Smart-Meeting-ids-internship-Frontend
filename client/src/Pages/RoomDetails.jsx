@@ -1,56 +1,63 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { FaUsers, FaArrowLeft,} from "react-icons/fa";
-import { MdMeetingRoom, MdLocationOn} from "react-icons/md";
+import { FaUsers, FaArrowLeft } from "react-icons/fa";
+import { MdMeetingRoom, MdLocationOn } from "react-icons/md";
 import axios from "axios";
 
 const RoomDetails = () => {
   const { roomId } = useParams();
   const navigate = useNavigate();
-  const [room,setRoom] = useState({})
-  const [features,setFeatures] = useState([])
+  const [room, setRoom] = useState({});
+  const [features, setFeatures] = useState([]);
 
-
-  const getRoom = async () =>{
+  const getRoom = async () => {
     try {
-      const res = await axios.get(`https://smartmeeting20250913230032.azurewebsites.net/api/room/${roomId}`,{
-        withCredentials: true,
-      });
-      const res2 = await axios.get(`https://smartmeeting20250913230032.azurewebsites.net/api/room/${roomId}/features`,{
-        withCredentials: true,
-      })
-      setRoom(res.data)
-      setFeatures(res2.data)
+      const res = await axios.get(
+        `https://smartmeeting20250913230032.azurewebsites.net/api/room/${roomId}`,
+        {
+          withCredentials: true,
+        }
+      );
+      const res2 = await axios.get(
+        `https://smartmeeting20250913230032.azurewebsites.net/api/room/${roomId}/features`,
+        {
+          withCredentials: true,
+        }
+      );
+      setRoom(res.data);
+      setFeatures(res2.data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
-  useEffect(()=>{
-    getRoom()
-  }, [])
-
+  useEffect(() => {
+    getRoom();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6">
       <div className="max-w-6xl mx-auto">
         {/* Back Button */}
-        <button
-          onClick={() => navigate("/dashboard/rooms")}
-          className="flex items-center text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 mb-6 transition-colors"
-        >
-          <FaArrowLeft className="mr-2" />
-          Back to Rooms
-        </button>
-        {/*Only admin*/}
-        <Link
-          to={`/dashboard/rooms/editroom/${roomId}`}
-          className="w-[15%] flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-md transition-colors dark:bg-indigo-500 dark:hover:bg-indigo-600"
-        >
-          <MdMeetingRoom className="mr-2" />
-          Edit Room
-        </Link>
+        <div className="flex justify-between items-center mb-6">
+          {/* Back Button */}
+          <button
+            onClick={() => navigate("/dashboard/rooms")}
+            className="flex items-center text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors"
+          >
+            <FaArrowLeft className="mr-2" />
+            Back to Rooms
+          </button>
 
+          {/* Edit Room Button – Only for Admin */}
+          <Link
+            to={`/dashboard/rooms/editroom/${roomId}`}
+            className="flex items-center px-4 py-2 rounded-md bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 dark:hover:bg-indigo-600 transition-colors"
+          >
+            <MdMeetingRoom className="mr-2" />
+            Edit Room
+          </Link>
+        </div>
         {/* Room Header */}
         <div className="flex flex-col md:flex-row gap-8 mb-8">
           {/* Room Image (placeholder) */}
@@ -79,7 +86,9 @@ const RoomDetails = () => {
                     : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
                 }`}
               >
-                {room && room.status == "Available" ? "Available" : "Under Maintenance"}
+                {room && room.status == "Available"
+                  ? "Available"
+                  : "Under Maintenance"}
               </span>
             </div>
 
