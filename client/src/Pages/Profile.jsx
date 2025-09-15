@@ -18,6 +18,7 @@ import Swal from "sweetalert2";
 const Profile = () => {
 
   const [employee, setEmployee] = useState({});
+  const [profile,setProfile] = useState(null)
   const [isEditing, setIsEditing] = useState(false);
   const [showPasswordForm, setShowPasswordForm] = useState(false);
   const [passwordData, setPasswordData] = useState({
@@ -26,7 +27,6 @@ const Profile = () => {
   })
   const [passError, setPassError] = useState(false)
   const {currentUser} = useSelector((state)=> state.user)
-  const [error,setError] = useState(false)
   const [loading,setLoading] = useState(false)
   const navigate = useNavigate()
 
@@ -44,7 +44,7 @@ const Profile = () => {
 
   const handleChange =(e)=>{
     if(e.target.name == "avatar"){
-        setEmployee({...employee, [e.target.name]: e.target.files[0]})
+        setProfile(e.target.files[0])
       }else{
     setEmployee({...employee , [e.target.name]: e.target.value})
       }
@@ -68,8 +68,11 @@ const Profile = () => {
       });
 
       if (result.isConfirmed) {
-        const imageURL = await handleFileUpload(employee.avatar , "profiles")
-        const newEmployeeInfo = {...employee, avatar: imageURL}
+        let newEmployeeInfo = {...employee}
+        if(profile == null){
+          const imageURL = await handleFileUpload(profile, "profiles")
+          newEmployeeInfo = {...employee, avatar: imageURL}
+        }
         const res = await axios.put(`https://smartmeeting20250913230032.azurewebsites.net/api/employee/${currentUser.id}`, newEmployeeInfo, {withCredentials:true})
 
         await Swal.fire({
@@ -156,6 +159,7 @@ const Profile = () => {
   }
   
   const SubmitChangedPassword = async ()=>{
+      e.preventDefault();
        try {
       const result = await Swal.fire({
         title: "Do you want to change your password?",
@@ -343,7 +347,6 @@ const Profile = () => {
                 </div>
               </div>
             </div>
-            {error && <p className="text-red-700 place-self-center text-lg">{error}</p> }
             {/* Change Password Section */}
             <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
               {!showPasswordForm ? (

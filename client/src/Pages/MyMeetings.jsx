@@ -40,9 +40,9 @@ const MyMeetings = () => {
         {/* Page Header */}
         <div className="mb-8 flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Meetings</h1>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2"> My Meetings</h1>
             <p className="text-gray-600 dark:text-gray-400">
-              View and manage all scheduled meetings
+              View and manage your scheduled meetings
             </p>
           </div>
           <Link

@@ -175,7 +175,7 @@ const MeetingDetails = () => {
       });
 
       if (result.isConfirmed) {
-        const res = await axios.put(`https://smartmeeting20250913230032.azurewebsites.net/api/meeting/cancelmeeting/${meetingId}`, {
+        const res = await axios.put(`https://smartmeeting20250913230032.azurewebsites.net/api/meeting/cancelmeeting/${meetingId}`,{}, {
           withCredentials: true,
         });
 
