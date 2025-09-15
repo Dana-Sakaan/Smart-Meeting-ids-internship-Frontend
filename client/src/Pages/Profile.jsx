@@ -69,7 +69,7 @@ const Profile = () => {
 
       if (result.isConfirmed) {
         let newEmployeeInfo = {...employee}
-        if(profile == null){
+        if(profile != null){
           const imageURL = await handleFileUpload(profile, "profiles")
           newEmployeeInfo = {...employee, avatar: imageURL}
         }
