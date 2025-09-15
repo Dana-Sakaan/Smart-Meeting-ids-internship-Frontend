@@ -314,7 +314,7 @@ const MeetingDetails = () => {
                 </div>
                 <div className="flex">
                   <span className="font-medium w-24">Author:</span>
-                  <span>{minutesMeeting && minutesMeeting.authorEmail} || Not chosen yet</span>
+                  <span>{minutesMeeting ? minutesMeeting.authorEmail : "Not chosen yet"}</span>
                 </div>
               </div>
             </div>
