@@ -158,7 +158,7 @@ const Profile = () => {
     }
   }
   
-  const SubmitChangedPassword = async ()=>{
+  const SubmitChangedPassword = async (e)=>{
       e.preventDefault();
        try {
       const result = await Swal.fire({
